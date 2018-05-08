@@ -81,9 +81,8 @@ var engine = module.exports = {
               item['recordingUrl'] = record.recording.contentUri
               item['processed'] = true
               var recordedFile = item.id + ".mp3"
-              item['localAudio'] = "http://localhost:3002/recordings/" + recordedFile
               recordArr.push(item)
-              var query = "INSERT or IGNORE into calls VALUES (" + item['id'] + ",'" + item['fromRecipient'] + "','" + item['toRecipient'] + "','" + item['recordingUrl'] + "'," + item['duration'] + ",'" + item['localAudio'] + "','')";
+              var query = "INSERT or IGNORE into calls VALUES (" + item['id'] + ",'" + item['fromRecipient'] + "','" + item['toRecipient'] + "','" + item['recordingUrl'] + "'," + item['duration'] + ",'')";
               db.run(query, function(err, result) {
                 if (err){
                   console.error(err.message);
@@ -170,6 +169,6 @@ function saveAudioFile(recordArr, resObj){
 
 function createTable() {
   let db = new sqlite3.Database(CALLS_DATABASE);
-  var query = 'CREATE TABLE if not exists calls (id DOUBLE PRIMARY KEY, fromRecipient VARCHAR(12) NOT NULL, toRecipient VARCHAR(12) NOT NULL, recordingUrl VARCHAR(256) NOT NULL, duration INT DEFAULT 0, localAudio VARCHAR(255) NOT NULL, transcript TEXT NOT NULL)'
+  var query = 'CREATE TABLE if not exists calls (id DOUBLE PRIMARY KEY, fromRecipient VARCHAR(12) NOT NULL, toRecipient VARCHAR(12) NOT NULL, recordingUrl VARCHAR(256) NOT NULL, duration INT DEFAULT 0, transcript TEXT NOT NULL)'
   db.run(query);
 }

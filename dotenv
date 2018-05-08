@@ -1,6 +1,6 @@
 PORT=3002
 PRINT_LOG=yes
-ADMIN=admin
+PROD=production
 
 CLIENT_ID_SB=YourSandboxAppClientId
 CLIENT_SECRET_SB=YourSandboxAppClientSecret

@@ -49,7 +49,6 @@ var engine = module.exports = {
       var audioSrc = "./recordings/" + req.body.audioSrc + ".mp3"
       watson.transcribe(res, req.body.audioSrc, audioSrc)
     },
-    // use async
     readCallLogsAsync(req, res){
       var endpoint = ""
       if (req.query.access == "account")
@@ -129,8 +128,6 @@ var engine = module.exports = {
       });
     },
     loadCallsFromDB: function(req, res){
-      if (!needLogin(res))
-        return
       let db = new sqlite3.Database(CALLS_DATABASE);
       var query = "SELECT * FROM calls";
       db.all(query, function (err, result) {
@@ -171,21 +168,6 @@ function saveAudioFile(recordArr, resObj){
   );
 }
 
-function needLogin(){
-  if (!platform.auth().accessTokenValid()) {
-    if (platform.auth().refreshTokenValid()){
-      platform.refresh()
-    }else{
-      platform.login()
-    }
-    return false
-  }
-  return true
-}
-platform.on(platform.events.refreshSuccess, function(e){
-    console.log("recall loadCallsFromDB")
-    engine.loadCallsFromDB()
-});
 function createTable() {
   let db = new sqlite3.Database(CALLS_DATABASE);
   var query = 'CREATE TABLE if not exists calls (id DOUBLE PRIMARY KEY, fromRecipient VARCHAR(12) NOT NULL, toRecipient VARCHAR(12) NOT NULL, recordingUrl VARCHAR(256) NOT NULL, duration INT DEFAULT 0, localAudio VARCHAR(255) NOT NULL, transcript TEXT NOT NULL)'

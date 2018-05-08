@@ -79,8 +79,6 @@ var engine = module.exports = {
               item['duration'] = record.duration
               item['id'] = record.recording.id
               item['recordingUrl'] = record.recording.contentUri
-              item['processed'] = true
-              var recordedFile = item.id + ".mp3"
               recordArr.push(item)
               var query = "INSERT or IGNORE into calls VALUES (" + item['id'] + ",'" + item['fromRecipient'] + "','" + item['toRecipient'] + "','" + item['recordingUrl'] + "'," + item['duration'] + ",'')";
               db.run(query, function(err, result) {
